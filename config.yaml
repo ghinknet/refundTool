@@ -1,0 +1,19 @@
+example:
+  alipay:
+    appID: ""
+    appCertPrivateKey: ""
+    appCert: ""
+    rootCert: ""
+    publicCert: ""
+    isProd: true
+  wechatPay:
+    appID: ""
+    appSecret: ""
+    merchantID: ""
+    merchantAPIv3Key: ""
+    merchantCertSerialNumber: ""
+    merchantPrivateKey: ""
+    publicKey: ""
+    publicKeyID: ""
+  prefix: ""
+  suffix: ""
