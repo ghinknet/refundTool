@@ -1,6 +1,7 @@
 package main
 
 import (
+	"errors"
 	"fmt"
 
 	"git.ghink.net/ghink/refundTool/internal/config"
@@ -111,7 +112,18 @@ func main() {
 		if err := payment.C.Refund(
 			orderID, payMethodType, currency, totalAmount, refundID, refundAmount, reason,
 		); err != nil {
-			logger.L.Error("failed to refund", zap.Error(err))
+			var payutilsError *model.PayutilsError
+			if errors.As(err, &payutilsError) {
+				upstreamCode, upstreamResponse, upstreamMessage := payutilsError.UpstreamDetail()
+				logger.L.Error(
+					"failed to refund", zap.Error(err),
+					zap.Int("upstreamCode", upstreamCode),
+					zap.String("upstreamResponse", upstreamResponse),
+					zap.String("upstreamMessage", upstreamMessage),
+				)
+			} else {
+				logger.L.Error("failed to refund", zap.Error(err))
+			}
 			continue
 		}
 	}
